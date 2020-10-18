@@ -9,8 +9,8 @@ import java.time.LocalDateTime;
 @Data
 @DataElement(key = "Orders")
 public class Order {
-    @DataElement(key = "clients_id", primaryKey = true)
-    private Long orderId;
+    @DataElement(key = "order_id", primaryKey = true)
+    private long orderId;
 
     @DataElement(key = "created_at")
     private Timestamp createdAt;

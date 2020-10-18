@@ -7,7 +7,7 @@ import lombok.Data;
 @DataElement(key = "Clients")
 public class Client {
     @DataElement(key = "client_id", primaryKey = true)
-    private Long clientId;
+    private long clientId;
 
     @DataElement(key = "client_name")
     private String name;

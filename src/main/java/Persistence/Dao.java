@@ -2,6 +2,7 @@ package Persistence;
 
 import Model.Annotations.DataElement;
 import Utils.AnnotationHelper;
+import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
@@ -28,34 +29,59 @@ public class Dao implements IDao {
             throw new IllegalArgumentException("This type is not allowed!");
 
         String tableName = AnnotationHelper.getKey(obj);
-
         Field[] fields = obj.getDeclaredFields();
 
-        String primaryKey = AnnotationHelper.getPrimaryKey(fields);
-
-        StringBuilder query = new StringBuilder()
-                .append("SELECT * FROM ")
-                .append(tableName)
-                .append("WHERE ")
-                .append(primaryKey)
-                .append("=")
-                .append(id);
-
+        String query = createQueryFromFields(fields, tableName, id);
         try {
-            Statement statement = dbConnection.createStatement();
-            ResultSet rs = statement.executeQuery(query.toString());
+            Statement statement = dbConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet rs = statement.executeQuery(query);
             rs.first();
-            // TODO: Resolver como vou deserializar isso num objeto complexo genérico
-            System.out.println(rs.getInt(primaryKey));
+
+            return createObjectInstance(rs, fields, obj);
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-
         return Optional.empty();
     }
 
+    private String createQueryFromFields(Field[] fields, String tableName, long id) {
+        StringBuilder param = new StringBuilder();
+
+        for(Field f : fields){
+            param.append(AnnotationHelper.getKey(f));
+            if(fields[fields.length - 1] != f)
+                param.append(",");
+        }
+
+        String primaryKey = AnnotationHelper.getPrimaryKey(fields);
+
+        StringBuilder query = new StringBuilder()
+                .append("SELECT ")
+                .append(param.toString())
+                .append(" FROM ")
+                .append(tableName)
+                .append(" WHERE ")
+                .append(primaryKey)
+                .append(" = ")
+                .append(id);
+
+        return query.toString();
+    }
+
+    @SneakyThrows
+    private Optional createObjectInstance(ResultSet rs, Field[] fields, Class<?> clazz) {
+
+        Object obj = clazz.getDeclaredConstructor().newInstance();
+
+        for(Field f : fields){
+            f.setAccessible(true);
+            f.set(obj, rs.getObject(AnnotationHelper.getKey(f)));
+        }
+
+        return Optional.of(obj);
+    }
 
     @Override
     public List getAll(Object dataObject) {
@@ -71,6 +97,7 @@ public class Dao implements IDao {
     public void update(Object dataObject, String[] params) {
 
     }
+
 
     @Override
     public void delete(Object dataObject) {
