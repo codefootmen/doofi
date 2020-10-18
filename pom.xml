@@ -53,7 +53,8 @@
           <artifactId>maven-war-plugin</artifactId>
           <version>3.2.2</version>
           <configuration>
-            <webXml>web\WEB-INF\web.xml</webXml>        
+            <webXml>web\WEB-INF\web.xml</webXml> 
+            <warSourceDirectory>${basedir}/web</warSourceDirectory>              
           </configuration>
         </plugin>
         <plugin>
@@ -68,6 +69,9 @@
           <groupId>org.apache.tomcat.maven</groupId>
           <artifactId>tomcat7-maven-plugin</artifactId>
           <version>2.2</version>
+          <configuration>
+              <warSourceDirectory>${basedir}/web</warSourceDirectory>  
+          </configuration>
           <executions>
             <execution>
               <id>tomcat-run</id>
@@ -75,14 +79,6 @@
                 <goal>exec-war-only</goal>
               </goals>
               <phase>package</phase>
-              <configuration>
-                <!-- <path>target/doofi.war</path> -->
-                <!-- optional, needed only if you want to use a preconfigured server.xml file -->
-                <!-- <serverXml>src/main/tomcatconf/server.xml</serverXml> -->
-                <!-- optional values which can be configurable -->
-                <!-- <attachArtifactClassifier>default value is exec-war but you can customize</attachArtifactClassifier>
-                <attachArtifactClassifierType>default value is jar</attachArtifactClassifierType> -->
-              </configuration>
             </execution>
           </executions>
         </plugin>
