@@ -8,7 +8,12 @@ import java.sql.SQLException;
 
 public class PostgreeConnection {
 
-    public static Connection getConnection() throws URISyntaxException, SQLException {
+    private static PostgreeConnection instance = new PostgreeConnection();
+    public static PostgreeConnection getInstance(){ return instance; }
+
+    private PostgreeConnection(){}
+
+    public Connection getConnection() throws URISyntaxException, SQLException {
 
         URI dbUri = new URI(System.getenv("DATABASE_URL"));
 

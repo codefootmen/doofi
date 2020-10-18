@@ -10,15 +10,13 @@ import org.junit.jupiter.api.Test;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-
 
 class DaoTest {
 
     @SneakyThrows
     @Test
     void get() {
-        IDao dao = new Dao(PostgreeConnection.getConnection());
+        IDao dao = Dao.getInstance();
         Address address = new Address();
 
         Optional<Address> test = dao.get(address, 1);

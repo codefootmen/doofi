@@ -7,6 +7,7 @@ This project is an example of some design patterns implementations.
 ## Implemented design patterns
 - Model View Controller - MVC
 - Data Access Object - DAO
+- Singleton
 - Reflection
 
 ## How to run

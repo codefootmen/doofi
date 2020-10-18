@@ -16,8 +16,12 @@ public class Dao implements IDao {
 
     private Connection dbConnection;
 
-    public Dao(Connection connection) {
-        dbConnection = connection;
+    private static IDao instance = new Dao();
+    public static IDao getInstance() { return instance; }
+
+    @SneakyThrows
+    private Dao(){
+        dbConnection = PostgreeConnection.getInstance().getConnection();
     }
 
     @Override
