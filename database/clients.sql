@@ -1,35 +1,41 @@
-Create table Addresses(
-	addressId bigint not null PRIMARY KEY,
+CREATE TABLE Addresses(
+	address_id serial PRIMARY KEY,
 	street varchar(100) not null,
-	houseNumber int not null,
+	house_number int not null,
 	details varchar(100),
 	neighbourhood varchar(100),
 	city varchar(100) not null
 )
 
-Create table Clients(
-	clientId bigint not null PRIMARY KEY,
-	name varchar(100),
+CREATE TABLE Clients(
+	client_id serial PRIMARY KEY,
+	client_name varchar(100),
 	cpf varchar(20),
 	username varchar(20) not null,
-	userPassword varchar(100) not null,
-	addressId bigint FOREIGN KEY REFERENCES Addresses(addressId)
+	user_password varchar(100) not null,
+    address_id bigint, 
+	FOREIGN KEY (address_id) 
+        REFERENCES Addresses (address_id)
 )
 
 
 CREATE TABLE Businesses(
-	businessId bigint not null PRIMARY KEY,
-	name varchar(100),
+	business_id serial PRIMARY KEY,
+	business_name varchar(100),
 	cnpj varchar(20),
-	addressId bigint FOREIGN KEY REFERENCES Addresses(addressId)
+	address_id bigint,
+    FOREIGN KEY (address_id)
+        REFERENCES Addresses(address_id)
 )
 
 
 
 CREATE TABLE Orders(
-	orderId bigint not null PRIMARY KEY,
-	createdAt DATETIME not null,
-	finishedAt DATETIME,
-	orderDescription varchar(100),
-	clientId bigint FOREIGN KEY REFERENCES Clients(clientId)
+	order_id serial PRIMARY KEY,
+	created_at TIMESTAMP not null,
+	finished_at TIMESTAMP,
+	order_description varchar(100),
+	client_id bigint,
+    FOREIGN KEY (client_id) 
+        REFERENCES Clients (client_id)
 )
