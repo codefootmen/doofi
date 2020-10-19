@@ -1,18 +1,20 @@
 package Utils;
+import Model.Client;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ClientValidationHelper implements IClientValidationHelper {
 
-    public boolean ValidateClient(String name, String cpf, String login, String password)
+    public boolean ValidateClient(Client client)
     {
-        SizeValidate(name, 8);
-        SizeValidate(cpf,11,11);
-        SizeValidate(login, 12,4);
-        SizeValidate(password, 10);
+        SizeValidate(client.getName(), 8);
+        SizeValidate(client.getCpf(), 11,11);
+        SizeValidate(client.getLogin(), 12,4);
+        SizeValidate(client.getPassword(), 10);
 
-        ValidateNameCharacters(name);
-        ValidateCpfCharacters(cpf);
+        ValidateNameCharacters(client.getName());
+        ValidateCpfCharacters(client.getCpf());
         return true;
     }
 

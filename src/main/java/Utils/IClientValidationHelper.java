@@ -1,5 +1,9 @@
 package Utils;
 
+import Model.Client;
+
 public interface IClientValidationHelper {
-    boolean ValidateClient(String name, String cpf, String login, String password);
+
+    //validate client fields
+    boolean ValidateClient(Client client);
 }

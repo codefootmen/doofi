@@ -1,6 +1,7 @@
 package Controller;
 
 import Model.Address;
+import Model.Client;
 import Persistence.Dao;
 import Utils.ClientValidationHelper;
 import Utils.IClientValidationHelper;
@@ -15,15 +16,27 @@ public class ClientController {
         this.clientValidation = clientValidationHelper;
     }
 
-    public void CreateClient (String name, String cpf, String login, String password, Address address) throws Exception {
-        var validation = clientValidation.ValidateClient(name, cpf, login, password);
+    public void CreateClient (Client client) throws Exception
+    {
+        boolean validation = clientValidation.ValidateClient(client);
 
         if(!validation){
             throw new Exception("Client not valid!");
         }
         else {
-            Dao.Save(name, cpf, login, password, address);
+            // save from DAO
         }
+
+        //In theory we need to return a view from here
+    }
+
+    public void DeleteClient(long clientId)
+    {
+        //Delete from DAO
+        //and return view
+    }
+    public void UpdateClient()
+    {
 
     }
 }
