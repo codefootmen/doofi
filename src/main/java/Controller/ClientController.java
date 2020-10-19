@@ -1,42 +1,51 @@
 package Controller;
 
-import Model.Address;
 import Model.Client;
 import Persistence.Dao;
 import Utils.ClientValidationHelper;
 import Utils.IClientValidationHelper;
+import Persistence.IDao;
 
 public class ClientController {
 
-    private IClientValidationHelper clientValidation;
-
-    public ClientController(IClientValidationHelper clientValidationHelper)
-    {
-        if(clientValidationHelper == null) throw new NullPointerException("Client validation helper");
-        this.clientValidation = clientValidationHelper;
-    }
-
     public void CreateClient (Client client) throws Exception
     {
-        boolean validation = clientValidation.ValidateClient(client);
+        boolean validation = ClientValidationHelper.getInstance().ValidateClient(client);
 
         if(!validation){
             throw new Exception("Client not valid!");
         }
         else {
-            // save from DAO
+            Dao.getInstance().save(client);
         }
 
         //In theory we need to return a view from here
     }
 
-    public void DeleteClient(long clientId)
+    public void DeleteClient(Client client)
     {
-        //Delete from DAO
-        //and return view
-    }
-    public void UpdateClient()
-    {
+        Dao.getInstance().delete(client);
 
+    }
+
+    public void UpdateClient(Client client, String[] changeParams) throws Exception {
+        // well i kinda don't know what is better, maybe I will make a override to check String[], but I will wait
+        // until DAO is fully implemented to change
+        boolean validation = ClientValidationHelper.getInstance().ValidateClient(client);
+
+        if(!validation){
+            throw new Exception("Client not valid!");
+        }
+        else {
+            Dao.getInstance().update(client, changeParams);
+        }
+
+        //In theory we need to return a view from here
+    }
+
+    public void ReadClient(Client client)
+    {
+        Dao.getInstance().get(client, client.getClientId());
+        //WIP
     }
 }

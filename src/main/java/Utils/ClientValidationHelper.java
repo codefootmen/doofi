@@ -6,6 +6,11 @@ import java.util.regex.Pattern;
 
 public class ClientValidationHelper implements IClientValidationHelper {
 
+    private static IClientValidationHelper instance = new ClientValidationHelper();
+    public static IClientValidationHelper getInstance() { return instance; }
+
+    private ClientValidationHelper(){}
+
     public boolean ValidateClient(Client client)
     {
         SizeValidate(client.getName(), 8);
