@@ -3,8 +3,6 @@ package Controller;
 import Model.Client;
 import Persistence.Dao;
 import Utils.ClientValidationHelper;
-import Utils.IClientValidationHelper;
-import Persistence.IDao;
 
 public class ClientController {
 
@@ -18,14 +16,12 @@ public class ClientController {
         else {
             Dao.getInstance().save(client);
         }
-
         //In theory we need to return a view from here
     }
 
     public void DeleteClient(Client client)
     {
         Dao.getInstance().delete(client);
-
     }
 
     public void UpdateClient(Client client, String[] changeParams) throws Exception {
@@ -39,7 +35,6 @@ public class ClientController {
         else {
             Dao.getInstance().update(client, changeParams);
         }
-
         //In theory we need to return a view from here
     }
 
