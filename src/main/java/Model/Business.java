@@ -7,7 +7,7 @@ import lombok.Data;
 @DataElement(key = "Businesses")
 public class Business {
     @DataElement(key = "business_id",  primaryKey = true)
-    private Long businessId;
+    private long businessId;
 
     @DataElement(key = "business_name")
     private String name;

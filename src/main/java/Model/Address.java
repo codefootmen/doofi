@@ -7,13 +7,13 @@ import lombok.Data;
 @DataElement(key = "Addresses")
 public class Address {
     @DataElement(key = "address_id",  primaryKey = true)
-    private Long addressId;
+    private long addressId;
 
     @DataElement(key = "street")
     private String street;
 
     @DataElement(key = "house_number")
-    private Integer houseNumber;
+    private int houseNumber;
 
     @DataElement(key = "details")
     private String details;
