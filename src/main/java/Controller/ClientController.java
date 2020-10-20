@@ -21,7 +21,7 @@ public class ClientController {
 
     public void DeleteClient(Client client)
     {
-        Dao.getInstance().delete(client);
+        Dao.getInstance().delete(client); // I think that thing needs the Id
     }
 
     public void UpdateClient(Client client, String[] changeParams) throws Exception {
@@ -42,5 +42,9 @@ public class ClientController {
     {
         Dao.getInstance().get(client, client.getClientId());
         //WIP
+    }
+
+    public void ReadAllClients(Client client){
+        Dao.getInstance().getAll(client);
     }
 }
