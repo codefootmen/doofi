@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,6 +51,49 @@ public class Dao implements IDao {
         return Optional.empty();
     }
 
+
+    @Override
+    public List getAll(Object dataObject) {
+        Class<?> obj = dataObject.getClass();
+
+        if(!obj.isAnnotationPresent(DataElement.class))
+            throw new IllegalArgumentException("This type is not allowed!");
+
+        String tableName = AnnotationHelper.getKey(obj);
+        Field[] fields = obj.getDeclaredFields();
+
+        String query = createQueryFromFields(fields, tableName);
+        List result = new ArrayList();
+        try {
+            Statement statement = dbConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet rs = statement.executeQuery(query);
+
+            while(rs.next()){
+                result.add(createObjectInstance(rs, fields, obj));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public void save(Object dataObject) {
+
+    }
+
+    @Override
+    public void update(Object dataObject, String[] params) {
+
+    }
+
+
+    @Override
+    public void delete(Object dataObject) {
+
+    }
+
     private String createQueryFromFields(Field[] fields, String tableName, long id) {
         StringBuilder param = new StringBuilder();
 
@@ -74,6 +118,24 @@ public class Dao implements IDao {
         return query.toString();
     }
 
+    private String createQueryFromFields(Field[] fields, String tableName) {
+        StringBuilder param = new StringBuilder();
+
+        for(Field f : fields){
+            param.append(AnnotationHelper.getKey(f));
+            if(fields[fields.length - 1] != f)
+                param.append(",");
+        }
+
+        StringBuilder query = new StringBuilder()
+                .append("SELECT ")
+                .append(param.toString())
+                .append(" FROM ")
+                .append(tableName);
+
+        return query.toString();
+    }
+
     @SneakyThrows
     private Optional createObjectInstance(ResultSet rs, Field[] fields, Class<?> clazz) {
 
@@ -81,30 +143,16 @@ public class Dao implements IDao {
 
         for(Field f : fields){
             f.setAccessible(true);
+
+            if(AnnotationHelper.isForeignKey(f)){
+                f.set(obj, get(f.getType().getDeclaredConstructor().newInstance(), rs.getLong(AnnotationHelper.getKey(f))).get());
+                continue;
+            }
+
             f.set(obj, rs.getObject(AnnotationHelper.getKey(f)));
         }
 
         return Optional.of(obj);
     }
 
-    @Override
-    public List getAll(Object dataObject) {
-        return null;
-    }
-
-    @Override
-    public void save(Object dataObject) {
-
-    }
-
-    @Override
-    public void update(Object dataObject, String[] params) {
-
-    }
-
-
-    @Override
-    public void delete(Object dataObject) {
-
-    }
 }
