@@ -19,10 +19,9 @@ class DaoTest {
     @SneakyThrows
     @Test
     void get_address() {
-        IDao dao = Dao.getInstance();
         Address address = new Address();
 
-        Optional<Address> test = dao.get(address, 1);
+        Optional<Address> test = Dao.getInstance().get(address, 1);
 
         assertNotNull(test);
     }
@@ -30,27 +29,41 @@ class DaoTest {
     @SneakyThrows
     @Test
     void get_client() {
-        IDao dao = Dao.getInstance();
         Client client = new Client();
 
-        Optional<Client> test = dao.get(client, 1);
+        Optional<Client> test = Dao.getInstance().get(client, 1);
 
         assertNotNull(test);
     }
 
     @Test
-    void getAll() {
-
-        IDao dao = Dao.getInstance();
+    void getAll_address() {
         Address address = new Address();
 
-        List<Address> test = dao.getAll(address);
+        List<Address> test = Dao.getInstance().getAll(address);
+
+        assertFalse(test.isEmpty());
+    }
+
+    @Test
+    void getAll_client() {
+        Client client = new Client();
+
+        List<Client> test = Dao.getInstance().getAll(client);
 
         assertFalse(test.isEmpty());
     }
 
     @Test
     void save() {
+        Address address = new Address();
+        address.setStreet("Av. JK");
+        address.setHouseNumber(123);
+        address.setDetails("Casa");
+        address.setNeighbourhood("Centro");
+        address.setCity("Juiz de fora");
+
+        //Dao.getInstance().save(address);
     }
 
     @Test

@@ -21,6 +21,6 @@ public class Address {
     @DataElement(key = "neighbourhood")
     private String neighbourhood;
 
-    @DataElement(key = "neighbourhood")
+    @DataElement(key = "city")
     private String city;
 }
