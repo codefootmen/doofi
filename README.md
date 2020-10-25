@@ -9,6 +9,7 @@ This project is an example of some design patterns implementations.
 - Data Access Object - DAO
 - Singleton
 - Reflection
+- Strategy
 
 ## How to run
 ```
