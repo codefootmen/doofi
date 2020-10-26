@@ -7,6 +7,6 @@ public interface IDao<T> {
     Optional<T> get(T dataObject, long id);
     List<T> getAll(T dataObject);
     void save(T dataObject);
-    void update(T dataObject, String[] params);
+    void update(T dataObject);
     void delete(T dataObject);
 }

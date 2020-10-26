@@ -1,6 +1,5 @@
 package Persistence;
 
-import Model.Annotations.DataElement;
 import Utils.AnnotationHelper;
 import lombok.SneakyThrows;
 
@@ -13,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static Utils.QueriesCreateHelper.*;
+
 public class Dao implements IDao {
 
     private Connection dbConnection;
@@ -24,6 +25,7 @@ public class Dao implements IDao {
     private Dao(){
         dbConnection = PostgreeConnection.getInstance().getConnection();
     }
+
 
     @Override
     public Optional get(Object dataObject, long id) {
@@ -72,14 +74,6 @@ public class Dao implements IDao {
         return result;
     }
 
-    private Class<?> getClassObject(Object dataObject) {
-        Class<?> obj = dataObject.getClass();
-
-        if(!obj.isAnnotationPresent(DataElement.class))
-            throw new IllegalArgumentException("This type is not allowed!");
-
-        return obj;
-    }
 
     @Override
     public void save(Object dataObject) {
@@ -96,116 +90,36 @@ public class Dao implements IDao {
 
     }
 
-    @SneakyThrows
-    private String createInsertQuery(Object dataObject) {
-        Class<?> obj = getClassObject(dataObject);
-
-        String tableName = AnnotationHelper.getKey(obj);
-        Field[] fields = obj.getDeclaredFields();
-
-
-        StringBuilder param = new StringBuilder();
-        StringBuilder values = new StringBuilder();
-
-        param.append("(");
-        values.append("(");
-        for(Field f : fields){
-
-            if(AnnotationHelper.isPrimaryKey(f))
-                continue;
-
-            f.setAccessible(true);
-            if(isStringElement(f)){
-                values.append("\'");
-                values.append(f.get(dataObject));
-                values.append("\'");
-            }
-            else{
-                values.append(f.get(dataObject));
-            }
-
-            param.append(AnnotationHelper.getKey(f));
-            if(fields[fields.length - 1] != f){
-                values.append(",");
-                param.append(",");
-            }
-        }
-        values.append(")");
-        param.append(")");
-
-        StringBuilder query = new StringBuilder()
-                .append("INSERT INTO ")
-                .append(tableName)
-                .append(param.toString())
-                .append(" values ")
-                .append(values);
-
-        return query.toString();
-    }
-
-    private boolean isStringElement(Field f) {
-        try{
-            return String.class.isInstance(f.getType().getDeclaredConstructor().newInstance());
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
     @Override
-    public void update(Object dataObject, String[] params) {
+    public void update(Object dataObject) {
+        String query = createUpdateQuery(dataObject);
+
+        try {
+            Statement statement = dbConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            statement.execute(query);
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
 
     }
-
 
     @Override
     public void delete(Object dataObject) {
+        String query = createDeleteQuery(dataObject);
 
-    }
+        try {
+            Statement statement = dbConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            statement.execute(query);
 
-    private String createQueryFromFields(Field[] fields, String tableName, long id) {
-        StringBuilder param = new StringBuilder();
-
-        for(Field f : fields){
-            param.append(AnnotationHelper.getKey(f));
-            if(fields[fields.length - 1] != f)
-                param.append(",");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
         }
 
-        String primaryKey = AnnotationHelper.getPrimaryKey(fields);
-
-        StringBuilder query = new StringBuilder()
-                .append("SELECT ")
-                .append(param.toString())
-                .append(" FROM ")
-                .append(tableName)
-                .append(" WHERE ")
-                .append(primaryKey)
-                .append(" = ")
-                .append(id);
-
-        return query.toString();
-    }
-
-    private String createQueryFromFields(Field[] fields, String tableName) {
-        StringBuilder param = new StringBuilder();
-
-        for(Field f : fields){
-            param.append(AnnotationHelper.getKey(f));
-            if(fields[fields.length - 1] != f)
-                param.append(",");
-        }
-
-        StringBuilder query = new StringBuilder()
-                .append("SELECT ")
-                .append(param.toString())
-                .append(" FROM ")
-                .append(tableName);
-
-        return query.toString();
     }
 
     @SneakyThrows
-    private Optional createObjectInstance(ResultSet rs, Field[] fields, Class<?> clazz) {
+    public Optional createObjectInstance(ResultSet rs, Field[] fields, Class<?> clazz) {
 
         Object obj = clazz.getDeclaredConstructor().newInstance();
 
@@ -222,5 +136,4 @@ public class Dao implements IDao {
 
         return Optional.of(obj);
     }
-
 }

@@ -24,7 +24,7 @@ public class ClientController {
         Dao.getInstance().delete(client); // I think that thing needs the Id
     }
 
-    public void UpdateClient(Client client, String[] changeParams) throws Exception {
+    public void UpdateClient(Client client) throws Exception {
         // well i kinda don't know what is better, maybe I will make a override to check String[], but I will wait
         // until DAO is fully implemented to change
         boolean validation = ClientValidationHelper.getInstance().ValidateClient(client);
@@ -33,7 +33,7 @@ public class ClientController {
             throw new Exception("Client not valid!");
         }
         else {
-            Dao.getInstance().update(client, changeParams);
+            Dao.getInstance().update(client);
         }
         //In theory we need to return a view from here
     }

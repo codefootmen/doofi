@@ -11,8 +11,7 @@ import org.junit.jupiter.api.Test;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class DaoTest {
 
@@ -21,7 +20,7 @@ class DaoTest {
     void get_address() {
         Address address = new Address();
 
-        Optional<Address> test = Dao.getInstance().get(address, 1);
+        Optional<Address> test = Dao.getInstance().get(address, 5);
 
         assertNotNull(test);
     }
@@ -63,14 +62,26 @@ class DaoTest {
         address.setNeighbourhood("Centro");
         address.setCity("Juiz de fora");
 
-        //Dao.getInstance().save(address);
+//        Dao.getInstance().save(address);
     }
 
     @Test
     void update() {
+        Optional<Address> address = Dao.getInstance().get(new Address(), 4);
+        address.get().setStreet("testando aaa");
+
+        Dao.getInstance().update(address.get());
+        Optional<Address> addressUpdated = Dao.getInstance().get(new Address(), address.get().getAddressId());
+
+        assertTrue(address.equals(addressUpdated));
     }
 
     @Test
     void delete() {
+//        Optional<Address> address = Dao.getInstance().get(new Address(), 5);
+//        Dao.getInstance().delete(address.get());
+
+        Optional<Address> addressDeleted = Dao.getInstance().get(new Address(), 5);
+        assertEquals(addressDeleted, Optional.empty());
     }
 }
