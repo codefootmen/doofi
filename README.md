@@ -14,8 +14,14 @@ This project is an example of some design patterns implementations.
 
 ## How to run
 
+Navigate to doofi-frontend and run:
+
 ```
-mvn cargo:run
+npm run build
+```
+Then, back in the root directory run:
+```
+mvn package && mvn cargo:run
 ```
 
 ## Contribuitors
