@@ -5,17 +5,19 @@ import persistence.Dao;
 import utils.ClientValidationHelper;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import java.util.Optional;
 
 
-@Path("/client")
+@Path("/client/")
 public class ClientController {
     
       @GET
       @Produces(MediaType.TEXT_PLAIN)
       public String index(){
-          return " CARARIOOOO";
+          return "It's Working!!!";
       }
 
 //    public void CreateClient (Client client) throws Exception
@@ -50,11 +52,22 @@ public class ClientController {
 //        //In theory we need to return a view from here
 //    }
 //
-//    public void ReadClient(Client client)
-//    {
-//        Dao.getInstance().get(client, client.getClientId());
-//        //WIP
-//    }
+//    @Produces(MediaType.TEXT_PLAIN)
+
+    @GET
+    @Path("{id}/")
+    public String getClient(@PathParam("id") String id)
+    {
+        try{
+            Optional<Client> client = Dao.getInstance().get(new Client(), Long.parseLong(id));
+            if(client.isPresent())
+                return client.get().getName();
+        }
+        catch (Exception e){
+            return e.toString();
+        }
+        return "There is no client with this id";
+    }
 //
 //    public void ReadAllClients(Client client){
 //        Dao.getInstance().getAll(client);
