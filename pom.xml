@@ -88,7 +88,8 @@
           <version>3.2.2</version>
           <configuration>
             <webXml>web\WEB-INF\web.xml</webXml> 
-            <warSourceDirectory>${basedir}/web</warSourceDirectory>              
+            <warSourceDirectory>${basedir}/web</warSourceDirectory>
+            <warSourceExcludes>doofi-frontend/**</warSourceExcludes>  
           </configuration>
         </plugin>
         <plugin>
