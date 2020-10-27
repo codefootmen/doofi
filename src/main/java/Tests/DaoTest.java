@@ -1,10 +1,10 @@
-package Tests;
+package tests;
 
-import Model.Address;
-import Model.Client;
-import Persistence.Dao;
-import Persistence.IDao;
-import Persistence.PostgreeConnection;
+import model.Address;
+import model.Client;
+import persistence.Dao;
+import persistence.IDao;
+import persistence.PostgreeConnection;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 

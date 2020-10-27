@@ -1,4 +1,4 @@
-package Persistence;
+package persistence;
 
 import java.net.URI;
 import java.net.URISyntaxException;

@@ -1,6 +1,6 @@
-package Utils;
+package utils;
 
-import Model.Annotations.DataElement;
+import model.annotations.DataElement;
 import lombok.SneakyThrows;
 import java.lang.reflect.Field;
 

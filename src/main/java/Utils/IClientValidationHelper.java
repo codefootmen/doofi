@@ -1,6 +1,6 @@
-package Utils;
+package utils;
 
-import Model.Client;
+import model.Client;
 
 public interface IClientValidationHelper {
 

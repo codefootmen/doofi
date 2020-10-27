@@ -1,6 +1,6 @@
-package Model;
+package model;
 
-import Model.Annotations.DataElement;
+import model.annotations.DataElement;
 import lombok.Data;
 
 import java.sql.Timestamp;

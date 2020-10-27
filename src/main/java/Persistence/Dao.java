@@ -1,6 +1,6 @@
-package Persistence;
+package persistence;
 
-import Utils.AnnotationHelper;
+import utils.AnnotationHelper;
 import lombok.SneakyThrows;
 
 import java.lang.reflect.Field;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static Utils.QueriesCreateHelper.*;
+import static utils.QueriesCreateHelper.*;
 
 public class Dao implements IDao {
 

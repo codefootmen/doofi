@@ -1,4 +1,4 @@
-package Model.Payments;
+package model.payments;
 
 public class PayPalPayment implements IPayStrategy{
 
