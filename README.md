@@ -17,7 +17,7 @@ This project is an example of some design patterns implementations.
 Navigate to doofi-frontend and run:
 
 ```
-npm run build
+npm ci && npm run build
 ```
 Then, back in the root directory run:
 ```
