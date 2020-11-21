@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware } from "redux";
+import reducer from "./ducks/bag";
 
 import createSagaMiddleware from "redux-saga";
 
@@ -6,4 +7,4 @@ import createSagaMiddleware from "redux-saga";
 // const store = createStore(reducer, applyMiddleware(middleware));
 // middleware.run(generator);
 
-export default createStore(() => {});
+export default createStore(reducer);
