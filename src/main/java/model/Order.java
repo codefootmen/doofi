@@ -21,6 +21,12 @@ public class Order {
     @DataElement(key = "order_description")
     private String orderDescription;
 
+    @DataElement(key = "quantity")
+    private int quantity;
+
     @DataElement(key = "client_id", foreignKey = true)
     private Client client;
+
+    @DataElement(key = "product_id", foreignKey = true)
+    private Product product;
 }
