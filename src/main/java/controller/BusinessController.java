@@ -6,10 +6,7 @@ import model.Business;
 import model.Business.*;
 import persistence.Dao;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -28,26 +25,37 @@ public class BusinessController {
         return gson.toJson(businessList);
     }
 
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("getBusiness/{id}/")
+    public String getBusinessById(@PathParam("id") int id)
+    {
+        Business business = new Business();
+        Gson gson = new Gson();
 
-//    @GET
-//    @Produces(MediaType.TEXT_PLAIN)
-//    @Path("creditcard/{amount}/")
-//    public String makePaymentWithCreditCard(@PathParam("amount") int amount) {
-//        IPayStrategy payment = new CreditCardPayment(new CreditCard("123", "04/20", "999"));
-//        if (payment.pay(amount))
-//            return "Paid US$ " + amount + " with Credit Card!";
-//
-//        return "Error";
-//    }
-//
-//    @GET
-//    @Produces(MediaType.TEXT_PLAIN)
-//    @Path("paypal/{amount}/")
-//    public String makePaymentWithPayPal(@PathParam("amount") int amount) {
-//        IPayStrategy payment = new PayPalPayment(new PayPalAccount("123", "04/20", true));
-//        if (payment.pay(amount))
-//            return "Paid US$ " + amount + " with PayPal!";
-//
-//        return "Error";
-//    }
+        try{
+            return gson.toJson(Dao.getInstance().get(business,id));
+        }
+        catch (Exception ex){
+            return ex.toString();
+        }
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("createBusiness")
+    public String saveBusiness(JsonObject object)
+    {
+        Gson gson = new Gson();
+
+        try{
+            Business business = gson.fromJson(object, Business.class);
+            Dao.getInstance().save(business);
+        }
+        catch (Exception ex){
+            return ex.toString();
+        }
+        return "Yeah it did went well";
+    }
+
 }
