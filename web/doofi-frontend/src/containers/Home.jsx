@@ -1,35 +1,38 @@
 import { Content, Card } from "../styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "../components/Header";
+import { GetAllBusinesses } from "../model/restaurants.model"
 
-function Home() {
+ function Home() {
   const [user, setUser] = useState({ name: "Batata" });
-  const [restaurants, setRestaurants] = useState([
-    { name: "Restaurante Genérico #1", id: 1 },
-    { name: "Restaurante Genérico #2", id: 2 },
-    { name: "Restaurante Genérico #3", id: 3 },
-    { name: "Restaurante Genérico #4", id: 4 },
-  ]);
+ 
+  const [restaurants, setRestaurants] = useState([]); 
+
+  useEffect(async()=>{
+    GetAllBusinesses().then(x => {
+      setRestaurants(x);
+    });
+  });
 
   return (
     <>
       <Header />
       <Content>
         <div className="cards">
-          {restaurants.map((x) => {
+          { restaurants ? restaurants.map((x) => {
             return (
-              <Link
-                to={`/restaurant/${x.id}`}
+              <Link key={x.value.businessId}
+                to={`/restaurant/${x.value.businessId}`}
                 style={{ textDecoration: "none" }}
               >
                 <Card>
-                  <strong>{x.name}</strong>
-                  <span>Almoço bom com entrega grátis</span>
+                  <strong>{x.value.name}</strong>
+                  <span>{x.value.neighbourhood} - {x.value.city}</span>
                 </Card>
               </Link>
             );
-          })}
+          }) : "" }
         </div>
       </Content>
     </>
