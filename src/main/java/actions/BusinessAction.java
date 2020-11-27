@@ -1,18 +1,21 @@
-package controller;
+package actions;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import controller.FrontController;
 import model.Business;
-import model.Business.*;
 import persistence.Dao;
 
-import javax.ws.rs.*;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("/business/")
-public class BusinessController {
+public class BusinessAction implements FrontController {
 
+    @Override
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String index()
@@ -25,10 +28,11 @@ public class BusinessController {
         return gson.toJson(businessList);
     }
 
+    @Override
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getBusiness/{id}/")
-    public String getBusinessById(@PathParam("id") int id)
+    public String getObjectById(@PathParam("id") int id)
     {
         Business business = new Business();
         Gson gson = new Gson();
@@ -40,22 +44,4 @@ public class BusinessController {
             return ex.toString();
         }
     }
-
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("createBusiness")
-    public String saveBusiness(JsonObject object)
-    {
-        Gson gson = new Gson();
-
-        try{
-            Business business = gson.fromJson(object, Business.class);
-            Dao.getInstance().save(business);
-        }
-        catch (Exception ex){
-            return ex.toString();
-        }
-        return "Yeah it did went well";
-    }
-
 }
