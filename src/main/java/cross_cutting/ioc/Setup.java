@@ -5,6 +5,7 @@ import actions.ClientAction;
 
 import javax.ws.rs.ApplicationPath;
 
+import controller.FrontController;
 import controller.PaymentController;
 import org.glassfish.jersey.server.ResourceConfig;
 
@@ -14,6 +15,7 @@ public class Setup extends ResourceConfig  {
         registerClasses(ClientAction.class);
         registerClasses(PaymentController.class);
         registerClasses(BusinessAction.class);
+        registerClasses(FrontController.class);
     }
 }
 

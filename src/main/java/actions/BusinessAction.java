@@ -1,7 +1,6 @@
 package actions;
 
 import com.google.gson.Gson;
-import controller.FrontController;
 import model.Business;
 import persistence.Dao;
 
@@ -13,9 +12,8 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 @Path("/business/")
-public class BusinessAction implements FrontController {
+public class BusinessAction {
 
-    @Override
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String index()
@@ -28,7 +26,6 @@ public class BusinessAction implements FrontController {
         return gson.toJson(businessList);
     }
 
-    @Override
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("getBusiness/{id}/")

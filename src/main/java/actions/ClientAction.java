@@ -1,6 +1,5 @@
 package actions;
 
-import controller.FrontController;
 import model.Client;
 import persistence.Dao;
 
@@ -12,16 +11,14 @@ import javax.ws.rs.core.MediaType;
 import java.util.Optional;
 
 @Path("/client/")
-public class ClientAction implements FrontController {
+public class ClientAction {
 
-    @Override
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String index() {
         return "It's Working!!!";
     }
 
-    @Override
     @GET
     @Path("{id}/")
     public String getObjectById(@PathParam("id") int id) {

@@ -9,8 +9,13 @@ This project is an example of some design patterns implementations.
 - Model View Controller - MVC
 - Data Access Object - DAO
 - Singleton
+- Façade (Front Controller)
+- Action (Command)
+- Template Method
+- Dependency Injection with Control Inversion
 - Reflection
 - Strategy
+
 
 ## How to run
 
