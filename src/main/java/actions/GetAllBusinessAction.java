@@ -9,7 +9,7 @@ import java.util.List;
 public class GetAllBusinessAction implements ICommand {
 
     @Override
-    public Object execute(String req) {
+    public Object execute(String req, int id) {
         Business business = new Business();
 
         List<Business> businessList = Dao.getInstance().getAll(business);

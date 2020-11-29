@@ -2,14 +2,11 @@ package controller;
 
 import actions.ICommand;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import lombok.SneakyThrows;
-import model.Business;
 import model.web_api_response.WebApiResponse;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.awt.*;
 
 @Path("/front/")
 public class FrontController {
@@ -17,7 +14,7 @@ public class FrontController {
     private static Gson gson = new Gson();
 
     @SneakyThrows
-    protected WebApiResponse handleRequest(String req)
+    protected WebApiResponse handleRequest(String req, int id)
     {
         ICommand command = null;
 
@@ -33,7 +30,7 @@ public class FrontController {
         }
 
         try{
-            Object response = command.execute(req);
+            Object response = command.execute(req, id);
 
             return new WebApiResponse(true,response,null);
         }catch (Exception e)
@@ -45,9 +42,9 @@ public class FrontController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("get/{command}")
-    public String get(@PathParam("command") String req)
+    @Path("get/{command}/{id}")
+    public String get(@PathParam("command") String req, @PathParam("id") int id)
     {
-        return gson.toJson(handleRequest(req));
+        return gson.toJson(handleRequest(req,id));
     }
 }
