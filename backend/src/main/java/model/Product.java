@@ -20,4 +20,7 @@ public class Product {
 
     @DataElement(key = "business_id", foreignKey = true)
     private Business business;
+
+    @DataElement(key = "product_category")
+    private Category category;
 }

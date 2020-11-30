@@ -16,6 +16,7 @@ This project is an example of some design patterns implementations.
 - Reflection
 - Strategy
 - Factory
+- Iterator
 
 
 ## How to run
