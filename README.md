@@ -17,6 +17,7 @@ This project is an example of some design patterns implementations.
 - Strategy
 - Factory
 - Iterator
+- Memento
 
 
 ## How to run
