@@ -6,12 +6,16 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class PostgreeConnection {
+public class PostgreConnection implements IConnector {
 
-    private static PostgreeConnection instance = new PostgreeConnection();
-    public static PostgreeConnection getInstance(){ return instance; }
+    private static final PostgreConnection instance = new PostgreConnection();
 
-    private PostgreeConnection(){}
+    public static PostgreConnection getInstance() {
+        return instance;
+    }
+
+    private PostgreConnection() {
+    }
 
     public Connection getConnection() throws URISyntaxException, SQLException {
 

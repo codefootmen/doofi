@@ -23,7 +23,9 @@ public class Dao implements IDao {
 
     @SneakyThrows
     private Dao(){
-        dbConnection = PostgreeConnection.getInstance().getConnection();
+        ConnectionFactory factory = new ConnectionFactory();
+        IConnector postgre = factory.getConnector(ConnectionType.POSTGRE);
+        dbConnection = postgre.getConnection();
     }
 
 
