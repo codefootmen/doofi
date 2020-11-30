@@ -8,7 +8,7 @@ import model.web_api_response.WebApiResponse;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-@Path("/front/")
+@Path("/action/")
 public class FrontController {
 
     private static Gson gson = new Gson();
@@ -16,21 +16,26 @@ public class FrontController {
     @SneakyThrows
     protected WebApiResponse handleRequest(String req, int id)
     {
-        ICommand command = null;
-
         try
         {
-            command = (ICommand) Class.forName("actions."+req).getDeclaredConstructor().newInstance();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try{
+            ICommand command = (ICommand) Class.forName("actions."+req).getDeclaredConstructor().newInstance();
             Object response = command.execute(req, id);
+
+            return new WebApiResponse(true,response,null);
+        }catch (Exception e)
+        {
+            return new WebApiResponse(false,null,e.getMessage());
+        }
+    }
+
+
+    @SneakyThrows
+    protected WebApiResponse handleRequest(String command, String req)
+    {
+        try
+        {
+            ICommand action = (ICommand) Class.forName("actions."+command).getDeclaredConstructor().newInstance();
+            Object response = action.execute(req, 0);
 
             return new WebApiResponse(true,response,null);
         }catch (Exception e)
@@ -42,9 +47,26 @@ public class FrontController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("get/{command}/{id}")
+    @Path("{command}/{id}")
     public String get(@PathParam("command") String req, @PathParam("id") int id)
     {
         return gson.toJson(handleRequest(req,id));
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{command}/")
+    public String get(@PathParam("command") String req)
+    {
+        return gson.toJson(handleRequest(req, 0));
+    }
+
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    @Path("{command}/")
+    public String post(@PathParam("command") String command, @FormParam("value") String req )
+    {
+         return gson.toJson(handleRequest(command, req));
     }
 }
