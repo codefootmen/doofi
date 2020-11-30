@@ -3,8 +3,6 @@ package tests;
 import model.Address;
 import model.Client;
 import persistence.Dao;
-import persistence.IDao;
-import persistence.PostgreeConnection;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
