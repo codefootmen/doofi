@@ -23,4 +23,15 @@ public class Product {
 
     @DataElement(key = "product_category")
     private Category category;
+
+    public Product(){}
+    public Product(Product p){
+        this.productId = p.getProductId();
+        this.name = p.getName();
+        this.description = p.getDescription();
+        this.unitaryValue = p.getUnitaryValue();
+        this.business = p.getBusiness();
+        this.category = p.getCategory();
+    }
+
 }

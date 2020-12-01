@@ -29,4 +29,14 @@ public class Order {
 
     @DataElement(key = "product_id", foreignKey = true)
     private Product product;
+
+    public Order(Order o){
+        this.orderId = o.getOrderId();
+        this.createdAt = o.getCreatedAt();
+        this.finishedAt = o.getFinishedAt();
+        this.orderDescription = o.getOrderDescription();
+        this.quantity = o.getQuantity();
+        this.client = new Client(o.getClient());
+        this.product = new Product(o.getProduct());
+    }
 }

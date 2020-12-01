@@ -23,4 +23,14 @@ public class Address {
 
     @DataElement(key = "city")
     private String city;
+
+    public Address(){};
+    public Address(Address a){
+        this.addressId = a.getAddressId();
+        this.street = a.getStreet();
+        this.houseNumber = a.getHouseNumber();
+        this.details = a.getDetails();
+        this.neighbourhood = a.getNeighbourhood();
+        this.city = a.getCity();
+    }
 }
