@@ -10,13 +10,13 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MakeOrderAction implements ICommand{
+public class MakeOrderAction implements ICommand {
 
     private Order order = new Order();
     private Gson gson = new Gson();
     IOrderChain orderChain = new CreateOrderChain();
 
-    public MakeOrderAction(){
+    public MakeOrderAction() {
         orderChain.setNextChain(new NotifyBusinessChain())
                 .setNextChain(new NotifyClientChain())
                 .setNextChain(new NotifyOrderIsReadyChain())
