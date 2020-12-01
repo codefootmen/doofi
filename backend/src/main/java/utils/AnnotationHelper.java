@@ -15,6 +15,15 @@ public class AnnotationHelper {
         return null;
     }
 
+    public static String getPrimaryKeyName(Field[] fields){
+        for(Field f : fields){
+            if(isPrimaryKey(f)){
+                return f.getName();
+            }
+        }
+        return null;
+    }
+
     public static String getKey(Field f) {
         String value = f.getAnnotation(DataElement.class)
                 .key();

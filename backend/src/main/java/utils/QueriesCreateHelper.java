@@ -1,8 +1,10 @@
 package utils;
 
+
 import model.annotations.DataElement;
 import lombok.SneakyThrows;
 import java.lang.reflect.Field;
+import java.sql.Timestamp;
 
 public class QueriesCreateHelper {
 
@@ -40,7 +42,7 @@ public class QueriesCreateHelper {
             updateValues.append(AnnotationHelper.getKey(f));
             updateValues.append(" = ");
 
-            if(isStringElement(f)){
+            if(isStringOrDateElement(f)){
                 updateValues.append("\'");
                 updateValues.append(f.get(dataObject));
                 updateValues.append("\'");
@@ -84,16 +86,28 @@ public class QueriesCreateHelper {
                 continue;
 
             f.setAccessible(true);
-            if(isStringElement(f)){
-                values.append("\'");
-                values.append(f.get(dataObject));
-                values.append("\'");
+            if(AnnotationHelper.isForeignKey(f)){
+
+                Object temp = f.get(dataObject);
+
+                Field a = temp.getClass().getDeclaredField(AnnotationHelper.getPrimaryKeyName(f.getType().getDeclaredFields()));
+                a.setAccessible(true);
+
+                values.append(a.get(temp));
+                param.append(AnnotationHelper.getPrimaryKey(temp.getClass().getDeclaredFields()));
             }
             else{
-                values.append(f.get(dataObject));
+                if(isStringOrDateElement(f) && f.get(dataObject) != null){
+                    values.append("\'");
+                    values.append(f.get(dataObject));
+                    values.append("\'");
+                }
+                else{
+                    values.append(f.get(dataObject));
+                }
+                param.append(AnnotationHelper.getKey(f));
             }
 
-            param.append(AnnotationHelper.getKey(f));
             if(fields[fields.length - 1] != f){
                 values.append(",");
                 param.append(",");
@@ -112,9 +126,28 @@ public class QueriesCreateHelper {
         return query.toString();
     }
 
-    private static boolean isStringElement(Field f) {
+    @SneakyThrows
+    private static Integer getForeingId(Field field, Class<?> clazz) {
+
+        Object obj = field.getType().getDeclaredConstructor().newInstance();
+
+        for(Field f : obj.getClass().getDeclaredFields()){
+            if(AnnotationHelper.isPrimaryKey(f)){
+                f.setAccessible(true);
+                return Integer.parseInt(f.get(clazz).toString());
+            }
+        }
+
+
+
+        return null;
+    }
+
+    private static boolean isStringOrDateElement(Field f) {
+        System.out.println("The field type is " + f.getType());
         try{
-            return String.class.isInstance(f.getType().getDeclaredConstructor().newInstance());
+            return String.class.toString().equals(f.getType().toString())
+                    || Timestamp.class.toString().equals(f.getType().toString());
         } catch (Exception e) {
             return false;
         }

@@ -16,7 +16,7 @@ public class Product {
     private String description;
 
     @DataElement(key = "unitary_value")
-    private String unitaryValue;
+    private int unitaryValue;
 
     @DataElement(key = "business_id", foreignKey = true)
     private Business business;
