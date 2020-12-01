@@ -17,6 +17,10 @@ This project is an example of some design patterns implementations.
 - Strategy
 - State
 - Chain of Responsability
+- Factory
+- Iterator
+- Memento
+
 
 
 ## How to run

@@ -5,8 +5,6 @@ import model.Client;
 import model.Order;
 import model.Product;
 import persistence.Dao;
-import persistence.IDao;
-import persistence.PostgreeConnection;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 

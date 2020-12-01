@@ -23,4 +23,15 @@ public class Client {
 
     @DataElement(key = "address_id", foreignKey = true)
     private Address address;
+
+    public Client(){};
+
+    public Client(Client c){
+        this.clientId = c.getClientId();
+        this.name = c.getName();
+        this.cpf = c.getCpf();
+        this.login = c.getLogin();
+        this.password = c.getPassword();
+        this.address = c.getAddress();
+    }
 }
