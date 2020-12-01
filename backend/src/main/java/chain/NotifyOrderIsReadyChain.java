@@ -2,6 +2,7 @@ package chain;
 
 import model.Order;
 import states.IOrderState;
+import utils.NotificationEmitter;
 
 public class NotifyOrderIsReadyChain extends IOrderChain implements IOrderState {
 
@@ -12,7 +13,7 @@ public class NotifyOrderIsReadyChain extends IOrderChain implements IOrderState 
         System.out.println("order status is "+order.getStatus());
         if(order.getStatus() == 2){
             System.out.println("validation is ok");
-            //Todo: send notification
+            NotificationEmitter.emit();
             setState(order);
             return checkNext(order);
         }

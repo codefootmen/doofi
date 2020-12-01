@@ -2,6 +2,7 @@ package persistence;
 
 import utils.AnnotationHelper;
 import lombok.SneakyThrows;
+import utils.NotificationEmitter;
 
 import java.lang.reflect.Field;
 import java.sql.Connection;
@@ -19,10 +20,13 @@ public class Dao implements IDao {
     private Connection dbConnection;
 
     private static IDao instance = new Dao();
-    public static IDao getInstance() { return instance; }
+
+    public static IDao getInstance() {
+        return instance;
+    }
 
     @SneakyThrows
-    private Dao(){
+    private Dao() {
         ConnectionFactory factory = new ConnectionFactory();
         IConnector postgre = factory.getConnector(ConnectionType.POSTGRE);
         dbConnection = postgre.getConnection();
@@ -66,7 +70,7 @@ public class Dao implements IDao {
             Statement statement = dbConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             ResultSet rs = statement.executeQuery(query);
 
-            while(rs.next()){
+            while (rs.next()) {
                 result.add(createObjectInstance(rs, fields, obj));
             }
         } catch (SQLException throwables) {
@@ -86,6 +90,7 @@ public class Dao implements IDao {
         try {
             Statement statement = dbConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             statement.execute(query);
+            NotificationEmitter.emit();
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -126,10 +131,10 @@ public class Dao implements IDao {
 
         Object obj = clazz.getDeclaredConstructor().newInstance();
 
-        for(Field f : fields){
+        for (Field f : fields) {
             f.setAccessible(true);
 
-            if(AnnotationHelper.isForeignKey(f)){
+            if (AnnotationHelper.isForeignKey(f)) {
                 f.set(obj, get(f.getType().getDeclaredConstructor().newInstance(), rs.getLong(AnnotationHelper.getKey(f))).get());
                 continue;
             }

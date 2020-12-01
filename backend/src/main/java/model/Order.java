@@ -33,6 +33,8 @@ public class Order {
     @DataElement(key = "product_id", foreignKey = true)
     private Product product;
 
+    public Order(){}
+
     public Order(Order o){
         this.orderId = o.getOrderId();
         this.createdAt = o.getCreatedAt();
