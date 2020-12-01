@@ -15,6 +15,8 @@ This project is an example of some design patterns implementations.
 - Dependency Injection with Control Inversion
 - Reflection
 - Strategy
+- State
+- Chain of Responsability
 
 
 ## How to run
