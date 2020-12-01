@@ -18,8 +18,8 @@ public class Bag {
         this.step = 0;
     }
 
-    public BagProductIterator iterator(Category category){
-        return new BagProductIterator(this.orders, category);
+    public BagProductIterator iterator(){
+        return new BagProductIterator(this.orders);
     }
 
     public BagMemento getMemento(){

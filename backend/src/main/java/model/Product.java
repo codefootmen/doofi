@@ -23,18 +23,14 @@ public class Product {
     @DataElement(key = "business_id", foreignKey = true)
     private Business business;
 
-    @DataElement(key = "product_category")
-    private Category category;
-
     public Product(){}
 
-    public Product(long productId, String name, String description, int unitaryValue, Business business, Category category) {
+    public Product(long productId, String name, String description, int unitaryValue, Business business) {
         this.productId = productId;
         this.name = name;
         this.description = description;
         this.unitaryValue = unitaryValue;
         this.business = business;
-        this.category = category;
     }
 
     public Product(Product p){
@@ -43,7 +39,6 @@ public class Product {
         this.description = p.getDescription();
         this.unitaryValue = p.getUnitaryValue();
         this.business = p.getBusiness();
-        this.category = p.getCategory();
     }
 
 }

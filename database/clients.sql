@@ -43,6 +43,7 @@ CREATE TABLE Orders(
 	finished_at TIMESTAMP,
 	order_description varchar(100),
 	quantity int,
+    order_status int,
 	client_id bigint,
 	product_id bigint,
     FOREIGN KEY (client_id)

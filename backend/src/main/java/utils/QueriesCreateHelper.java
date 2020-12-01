@@ -26,6 +26,7 @@ public class QueriesCreateHelper {
 
         StringBuilder updateValues = new StringBuilder();
         StringBuilder whereClause = new StringBuilder();
+        int index = 0;
         for(Field f : fields){
             f.setAccessible(true);
 
@@ -36,6 +37,12 @@ public class QueriesCreateHelper {
                 whereClause.append(AnnotationHelper.getKey(f));
                 whereClause.append(" = ");
                 whereClause.append(f.get(dataObject));
+                index++;
+                continue;
+            }
+
+            if(AnnotationHelper.isForeignKey(f)){
+                index++;
                 continue;
             }
 
@@ -51,9 +58,10 @@ public class QueriesCreateHelper {
                 updateValues.append(f.get(dataObject));
             }
 
-            if(fields[fields.length - 1] != f){
+            if(fields[fields.length - 1] != f && !AnnotationHelper.isForeignKey(fields[index+1]) ){
                 updateValues.append(",");
             }
+            index++;
         }
 
         StringBuilder query = new StringBuilder()

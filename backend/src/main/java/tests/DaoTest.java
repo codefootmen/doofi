@@ -90,13 +90,13 @@ class DaoTest {
 
     @Test
     void update() {
-        Optional<Address> address = Dao.getInstance().get(Address.builder().build(), 4);
-        address.get().setStreet("testando aaa");
+        Optional<Order> order = Dao.getInstance().get(Order.builder().build(), 1);
+        order.get().setFinishedAt(new Timestamp(System.currentTimeMillis()));
 
-        Dao.getInstance().update(address.get());
-        Optional<Address> addressUpdated = Dao.getInstance().get(Address.builder().build(), address.get().getAddressId());
+        Dao.getInstance().update(order.get());
+        Optional<Address> addressUpdated = Dao.getInstance().get(Address.builder().build(), order.get().getOrderId());
 
-        assertTrue(address.equals(addressUpdated));
+        assertTrue(order.equals(addressUpdated));
     }
 
     @Test
