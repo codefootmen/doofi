@@ -16,9 +16,6 @@ public abstract class IOrderChain
     public abstract boolean invoke(Order order);
 
     protected boolean checkNext(Order order) {
-        System.out.println("entered next check");
-        System.out.println("The order is = " + order);
-        System.out.println("The next one = " + next);
         if (next == null) {
             return true;
         }

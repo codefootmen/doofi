@@ -14,10 +14,6 @@ public class CreateOrderChain extends IOrderChain implements IOrderState  {
     private static int InitialOrderChainStatus = 0;
 
     public boolean invoke(Order order) {
-        System.out.println("entered create order chain");
-        System.out.println("o order.getStatus() = "+order.getStatus());
-        System.out.println("The order = " + order);
-
 
         try {
             Dao.getInstance().save(order);
@@ -26,7 +22,6 @@ public class CreateOrderChain extends IOrderChain implements IOrderState  {
 
         }catch(Exception ex)
         {
-            System.out.println("Something went wrong " + ex.getMessage());
             return false;
         }
 

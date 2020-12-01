@@ -9,15 +9,11 @@ public class NotifyOrderIsDeliveried extends IOrderChain implements IOrderState 
     private static int DeliveredStatus = 4;
 
     public boolean invoke(Order order) {
-        System.out.println("entered notify order is delivered");
-        System.out.println("order status now is "+order.getStatus());
         if(order.getStatus() == 3){
-            System.out.println("Validation is ok");
             NotificationEmitter.emit();
             setState(order);
             return checkNext(order);
         }
-        System.out.println("validation went wrong");
         return false;
     }
 

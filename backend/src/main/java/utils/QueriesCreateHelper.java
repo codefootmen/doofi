@@ -144,7 +144,6 @@ public class QueriesCreateHelper {
     }
 
     private static boolean isStringOrDateElement(Field f) {
-        System.out.println("The field type is " + f.getType());
         try{
             return String.class.toString().equals(f.getType().toString())
                     || Timestamp.class.toString().equals(f.getType().toString());
