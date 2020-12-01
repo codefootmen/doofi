@@ -24,7 +24,7 @@ public class Order {
     @DataElement(key = "quantity")
     private int quantity;
 
-    @DataElement(key = "status")
+    @DataElement(key = "order_status")
     private Integer status;
 
     @DataElement(key = "client_id", foreignKey = true)

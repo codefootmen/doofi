@@ -3,22 +3,21 @@ package chain;
 import model.Order;
 import states.IOrderState;
 
-public class NotifyOrderIsReadyChain implements IOrderState, IOrderChain {
-    private IOrderChain chain;
+public class NotifyOrderIsReadyChain extends IOrderChain implements IOrderState {
+
     private static int OrderIsReadyStatus = 3;
 
-    @Override
-    public void setNextChain(IOrderChain nextChain)
-    {
-        this.chain = nextChain;
-    }
-
-    @Override
-    public void Invoke(Order order) {
+    public boolean invoke(Order order) {
+        System.out.println("entered order is ready");
+        System.out.println("order status is "+order.getStatus());
         if(order.getStatus() == 2){
+            System.out.println("validation is ok");
             //Todo: send notification
             setState(order);
+            return checkNext(order);
         }
+        System.out.println("validation went wrong");
+        return false;
     }
 
     @Override

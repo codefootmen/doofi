@@ -2,12 +2,15 @@ package tests;
 
 import model.Address;
 import model.Client;
+import model.Order;
+import model.Product;
 import persistence.Dao;
 import persistence.IDao;
 import persistence.PostgreeConnection;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,14 +58,16 @@ class DaoTest {
 
     @Test
     void save() {
-        Address address = new Address();
-        address.setStreet("Av. JK");
-        address.setHouseNumber(123);
-        address.setDetails("Casa");
-        address.setNeighbourhood("Centro");
-        address.setCity("Juiz de fora");
+        Order order = new Order();
+        Client client = new Client();
+        client.setClientId(2);
+        Product prod = new Product();
+        prod.setProductId(1);
+        order.setProduct(prod);
+        order.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+        order.setClient(client);
 
-//        Dao.getInstance().save(address);
+        Dao.getInstance().save(order);
     }
 
     @Test

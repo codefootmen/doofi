@@ -3,23 +3,22 @@ package chain;
 import model.Order;
 import states.IOrderState;
 
-public class NotifyClientChain implements  IOrderState, IOrderChain {
+public class NotifyClientChain extends IOrderChain implements  IOrderState {
 
-    private IOrderChain chain;
     private static int OrderAcceptedByBusinessStatus = 2;
 
-    @Override
-    public void setNextChain(IOrderChain nextChain) {
-
-        this.chain = nextChain;
-    }
-
-    @Override
-    public void Invoke(Order order) {
+    public boolean invoke(Order order) {
+        System.out.println("entered notify client");
+        System.out.println("current order status" + order.getStatus());
+        boolean validation = order.getStatus() == 1;
         if(order.getStatus() == 1){
+            System.out.println("validation result = " + validation);
             //Todo: send notification
             setState(order);
+            return checkNext(order);
         }
+        System.out.println("Validation went wrong on notify client");
+        return false;
     }
 
     @Override

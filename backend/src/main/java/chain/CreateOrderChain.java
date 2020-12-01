@@ -4,21 +4,32 @@ import model.Order;
 import persistence.Dao;
 import states.IOrderState;
 
-public class CreateOrderChain implements IOrderState, IOrderChain {
-    private IOrderChain chainData;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class CreateOrderChain extends IOrderChain implements IOrderState  {
+
     private static int InitialOrderChainStatus = 0;
 
-    @Override
-    public void setNextChain(IOrderChain nextChain) {
-        this.chainData = nextChain;
-    }
+    public boolean invoke(Order order) {
+        System.out.println("entered create order chain");
+        System.out.println("o order.getStatus() = "+order.getStatus());
+        System.out.println("The order = " + order);
 
-    @Override
-    public void Invoke(Order order) {
-        if(order.getStatus() == null) {
+
+        try {
             Dao.getInstance().save(order);
             setState(order);
+            return checkNext(order);
+
+        }catch(Exception ex)
+        {
+            System.out.println("Something went wrong " + ex.getMessage());
+            return false;
         }
+
     }
 
     @Override

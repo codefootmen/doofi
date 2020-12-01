@@ -79,6 +79,7 @@ public class Dao implements IDao {
     public void save(Object dataObject) {
 
         String query = createInsertQuery(dataObject);
+        System.out.println("the query is " + query);
 
         try {
             Statement statement = dbConnection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
