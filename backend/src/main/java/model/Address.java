@@ -1,9 +1,11 @@
 package model;
 
+import lombok.Builder;
 import model.annotations.DataElement;
 import lombok.Data;
 
 @Data
+@Builder
 @DataElement(key = "Addresses")
 public class Address {
     @DataElement(key = "address_id",  primaryKey = true)
@@ -25,6 +27,16 @@ public class Address {
     private String city;
 
     public Address(){};
+
+    public Address(long addressId, String street, int houseNumber, String details, String neighbourhood, String city) {
+        this.addressId = addressId;
+        this.street = street;
+        this.houseNumber = houseNumber;
+        this.details = details;
+        this.neighbourhood = neighbourhood;
+        this.city = city;
+    }
+
     public Address(Address a){
         this.addressId = a.getAddressId();
         this.street = a.getStreet();

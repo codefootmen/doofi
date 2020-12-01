@@ -1,9 +1,6 @@
 package tests;
 
-import model.Address;
-import model.Client;
-import model.Order;
-import model.Product;
+import model.*;
 import persistence.Dao;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
@@ -19,7 +16,7 @@ class DaoTest {
     @SneakyThrows
     @Test
     void get_address() {
-        Address address = new Address();
+        Address address = Address.builder().build();
 
         Optional<Address> test = Dao.getInstance().get(address, 5);
 
@@ -28,8 +25,29 @@ class DaoTest {
 
     @SneakyThrows
     @Test
+    void get_business() {
+        Business business = Business.builder().businessId(1).build();
+
+        Optional<Address> test = Dao.getInstance().get(business, business.getBusinessId());
+
+        assertNotNull(test);
+    }
+
+    @SneakyThrows
+    @Test
+    void get_order() {
+        Order order = Order.builder().orderId(1).build();
+
+        Optional<Address> test = Dao.getInstance().get(order, order.getOrderId());
+
+        assertNotNull(test);
+    }
+
+    @SneakyThrows
+    @Test
     void get_client() {
-        Client client = new Client();
+        Client client = Client.builder().build();
+
 
         Optional<Client> test = Dao.getInstance().get(client, 1);
 
@@ -38,7 +56,7 @@ class DaoTest {
 
     @Test
     void getAll_address() {
-        Address address = new Address();
+        Address address = Address.builder().build();
 
         List<Address> test = Dao.getInstance().getAll(address);
 
@@ -47,7 +65,7 @@ class DaoTest {
 
     @Test
     void getAll_client() {
-        Client client = new Client();
+        Client client = Client.builder().build();
 
         List<Client> test = Dao.getInstance().getAll(client);
 
@@ -56,25 +74,27 @@ class DaoTest {
 
     @Test
     void save() {
-        Order order = new Order();
-        Client client = new Client();
-        client.setClientId(2);
-        Product prod = new Product();
-        prod.setProductId(1);
-        order.setProduct(prod);
-        order.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-        order.setClient(client);
+        Order order = Order
+                .builder()
+                .client(Client.builder()
+                        .clientId(2)
+                        .build())
+                .product(Product.builder()
+                        .productId(1)
+                        .build())
+                .createdAt(new Timestamp(System.currentTimeMillis()))
+                .build();
 
         Dao.getInstance().save(order);
     }
 
     @Test
     void update() {
-        Optional<Address> address = Dao.getInstance().get(new Address(), 4);
+        Optional<Address> address = Dao.getInstance().get(Address.builder().build(), 4);
         address.get().setStreet("testando aaa");
 
         Dao.getInstance().update(address.get());
-        Optional<Address> addressUpdated = Dao.getInstance().get(new Address(), address.get().getAddressId());
+        Optional<Address> addressUpdated = Dao.getInstance().get(Address.builder().build(), address.get().getAddressId());
 
         assertTrue(address.equals(addressUpdated));
     }
@@ -84,7 +104,7 @@ class DaoTest {
 //        Optional<Address> address = Dao.getInstance().get(new Address(), 5);
 //        Dao.getInstance().delete(address.get());
 
-        Optional<Address> addressDeleted = Dao.getInstance().get(new Address(), 5);
+        Optional<Address> addressDeleted = Dao.getInstance().get(Address.builder().build(), 5);
         assertEquals(addressDeleted, Optional.empty());
     }
 }

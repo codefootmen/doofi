@@ -10,7 +10,7 @@ public class GetAllBusinessAction implements ICommand {
 
     @Override
     public Object execute(String req, int id) {
-        Business business = new Business();
+        Business business = Business.builder().build();
 
         List<Business> businessList = Dao.getInstance().getAll(business);
 

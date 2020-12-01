@@ -1,9 +1,11 @@
 package model;
 
+import lombok.Builder;
 import lombok.Data;
 import model.annotations.DataElement;
 
 @Data
+@Builder
 @DataElement(key = "Products")
 public class Product {
     @DataElement(key = "product_id", primaryKey = true)
@@ -25,6 +27,16 @@ public class Product {
     private Category category;
 
     public Product(){}
+
+    public Product(long productId, String name, String description, int unitaryValue, Business business, Category category) {
+        this.productId = productId;
+        this.name = name;
+        this.description = description;
+        this.unitaryValue = unitaryValue;
+        this.business = business;
+        this.category = category;
+    }
+
     public Product(Product p){
         this.productId = p.getProductId();
         this.name = p.getName();

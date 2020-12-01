@@ -9,7 +9,7 @@ public class GetAllClientsAction implements ICommand {
 
     @Override
     public Object execute(String req, int id) {
-        Client client = new Client();
+        Client client = Client.builder().build();
 
         List<Client> clientList = Dao.getInstance().getAll(client);
 
