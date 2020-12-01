@@ -1,5 +1,6 @@
 package model;
 
+import lombok.Builder;
 import model.annotations.DataElement;
 import lombok.Data;
 
@@ -7,6 +8,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 @DataElement(key = "Orders")
 public class Order {
     @DataElement(key = "order_id", primaryKey = true)
@@ -33,7 +35,19 @@ public class Order {
     @DataElement(key = "product_id", foreignKey = true)
     private Product product;
 
-    public Order(){}
+    public Order() {
+    }
+
+    public Order(long orderId, Timestamp createdAt, Timestamp finishedAt, String orderDescription, int quantity, Integer status, Client client, Product product) {
+        this.orderId = orderId;
+        this.createdAt = createdAt;
+        this.finishedAt = finishedAt;
+        this.orderDescription = orderDescription;
+        this.quantity = quantity;
+        this.status = status;
+        this.client = client;
+        this.product = product;
+    }
 
     public Order(Order o){
         this.orderId = o.getOrderId();

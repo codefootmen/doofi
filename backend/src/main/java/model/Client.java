@@ -1,9 +1,11 @@
 package model;
 
+import lombok.Builder;
 import model.annotations.DataElement;
 import lombok.Data;
 
 @Data
+@Builder
 @DataElement(key = "Clients")
 public class Client {
     @DataElement(key = "client_id", primaryKey = true)
@@ -25,6 +27,15 @@ public class Client {
     private Address address;
 
     public Client(){};
+
+    public Client(long clientId, String name, String cpf, String login, String password, Address address) {
+        this.clientId = clientId;
+        this.name = name;
+        this.cpf = cpf;
+        this.login = login;
+        this.password = password;
+        this.address = address;
+    }
 
     public Client(Client c){
         this.clientId = c.getClientId();

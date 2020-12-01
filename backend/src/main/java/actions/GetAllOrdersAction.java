@@ -10,7 +10,7 @@ public class GetAllOrdersAction implements ICommand {
 
     @Override
     public Object execute(String req, int id) {
-        Order order = new Order();
+        Order order = Order.builder().build();
 
         List<Order> orderList = Dao.getInstance().getAll(order);
 
