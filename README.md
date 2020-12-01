@@ -20,7 +20,7 @@ This project is an example of some design patterns implementations.
 - Factory
 - Iterator
 - Memento
-
+- Observable
 
 
 ## How to run
