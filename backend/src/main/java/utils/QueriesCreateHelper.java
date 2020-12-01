@@ -49,7 +49,7 @@ public class QueriesCreateHelper {
             updateValues.append(AnnotationHelper.getKey(f));
             updateValues.append(" = ");
 
-            if(isStringOrDateElement(f)){
+            if(isStringOrDateElement(f) && f.get(dataObject) != null){
                 updateValues.append("\'");
                 updateValues.append(f.get(dataObject));
                 updateValues.append("\'");
