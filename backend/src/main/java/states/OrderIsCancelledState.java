@@ -4,17 +4,33 @@ import model.Order;
 
 public class OrderIsCancelledState implements IOrderState{
 
-    private static OrderIsCancelledState instance = new OrderIsCancelledState();
-    private OrderIsCancelledState(){}
-
-    public static OrderIsCancelledState instance()
-    {
-        return instance;
+    @Override
+    public boolean orderCreated(Order order) {
+        return false;
     }
 
     @Override
-    public void setState(Order order) {
-        System.out.println("Order is cancelled");
-        order.setStatus(4);
+    public boolean orderAccepted(Order order) {
+        return false;
+    }
+
+    @Override
+    public boolean orderSent(Order order) {
+        return false;
+    }
+
+    @Override
+    public boolean orderDeliveried(Order order) {
+        return false;
+    }
+
+    @Override
+    public boolean orderCancelled(Order order) {
+        return false;
+    }
+
+    @Override
+    public String getState() {
+        return "order cancelled";
     }
 }

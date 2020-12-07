@@ -6,12 +6,7 @@ import utils.NotificationEmitter;
 public class NotifyOrderIsReadyChain extends OrderChain {
 
     public boolean invoke(Order order) {
-
-        if(order.getStatus() == 2){
-            order.updateStatus();
-            NotificationEmitter.emit();
-            return checkNext(order);
-        }
-        return false;
+        NotificationEmitter.emit();
+        return checkNext(order);
     }
 }

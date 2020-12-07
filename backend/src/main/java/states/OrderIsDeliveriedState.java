@@ -4,17 +4,33 @@ import model.Order;
 
 public class OrderIsDeliveriedState implements IOrderState{
 
-    private static OrderIsDeliveriedState instance = new OrderIsDeliveriedState();
-    private OrderIsDeliveriedState(){}
-
-    public static OrderIsDeliveriedState instance()
-    {
-        return instance;
+    @Override
+    public boolean orderCreated(Order order) {
+        return false;
     }
 
     @Override
-    public void setState(Order order) {
-        System.out.println("Order is deliveried");
-        order.setStatus(3);
+    public boolean orderAccepted(Order order) {
+        return false;
+    }
+
+    @Override
+    public boolean orderSent(Order order) {
+        return false;
+    }
+
+    @Override
+    public boolean orderDeliveried(Order order) {
+        return false;
+    }
+
+    @Override
+    public boolean orderCancelled(Order order) {
+        return false;
+    }
+
+    @Override
+    public String getState() {
+        return "deliveried";
     }
 }

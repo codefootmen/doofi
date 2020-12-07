@@ -3,6 +3,7 @@ package model;
 import lombok.Builder;
 import model.annotations.DataElement;
 import lombok.Data;
+import persistence.Dao;
 import states.IOrderState;
 import states.OrderIsCreatedState;
 
@@ -28,13 +29,8 @@ public class Order {
     @DataElement(key = "quantity")
     private int quantity;
 
-//    0: order created
-//    1: order accepted
-//    2: order ready for delivery
-//    3: order deliveried
-//    4: order cancelled
     @DataElement(key = "order_status")
-    private Integer status;
+    private IOrderState currentStatus;
 
     @DataElement(key = "client_id", foreignKey = true)
     private Client client;
@@ -42,21 +38,13 @@ public class Order {
     @DataElement(key = "product_id", foreignKey = true)
     private Product product;
 
-    private IOrderState currentStatus;
-
-    public Order(IOrderState currentStatus) {
-        if(currentStatus == null) this.currentStatus = OrderIsCreatedState.instance();
-
-        this.currentStatus = currentStatus;
-    }
-
-    public Order(long orderId, Timestamp createdAt, Timestamp finishedAt, String orderDescription, int quantity, Integer status, Client client, Product product) {
+    public Order(long orderId, Timestamp createdAt, Timestamp finishedAt, String orderDescription, int quantity, IOrderState status, Client client, Product product) {
         this.orderId = orderId;
         this.createdAt = createdAt;
         this.finishedAt = finishedAt;
         this.orderDescription = orderDescription;
         this.quantity = quantity;
-        this.status = status;
+        this.currentStatus = status;
         this.client = client;
         this.product = product;
     }
@@ -71,8 +59,30 @@ public class Order {
         this.product = new Product(o.getProduct());
     }
 
-    public void updateStatus()
-    {
-        currentStatus.setState(this);
+    public void updateState(){
+        Dao.getInstance().update(this);
+    }
+
+    public void setCurrentStatus (IOrderState orderState){
+        this.currentStatus = orderState;
+    }
+    public boolean orderCreated(Order order) {
+        return this.currentStatus.orderCreated(this);
+    }
+
+    public boolean orderAccepted(Order order) {
+        return this.currentStatus.orderAccepted(this);
+    }
+
+    public boolean orderSent(Order order) {
+        return this.currentStatus.orderSent(this);
+    }
+
+    public boolean orderDeliveried(Order order) {
+        return this.currentStatus.orderDeliveried(this);
+    }
+
+    public boolean orderCancelled(Order order) {
+        return this.currentStatus.orderCancelled(this);
     }
 }

@@ -4,17 +4,45 @@ import model.Order;
 
 public class OrderIsCreatedState implements IOrderState{
 
-    private static OrderIsCreatedState instance = new OrderIsCreatedState();
-    private OrderIsCreatedState(){}
-
-    public static OrderIsCreatedState instance()
-    {
-        return instance;
+    @Override
+    public boolean orderCreated(Order order) {
+        return false;
     }
 
     @Override
-    public void setState(Order order) {
-        System.out.println("Order is created");
-        order.setStatus(0);
+    public boolean orderAccepted(Order order) {
+        try{
+            order.setCurrentStatus(new OrderAcceptedState());
+            order.updateState();
+        }catch (Exception e){
+            e.toString();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean orderSent(Order order) {
+        return false;
+    }
+
+    @Override
+    public boolean orderDeliveried(Order order) {
+        return false;
+    }
+
+    @Override
+    public boolean orderCancelled(Order order) {
+        try{
+            order.setCurrentStatus(new OrderIsCancelledState());
+            order.updateState();
+        }catch (Exception e){
+            e.toString();
+        }
+        return true;
+    }
+
+    @Override
+    public String getState() {
+        return "order created";
     }
 }
