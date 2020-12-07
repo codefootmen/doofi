@@ -3,6 +3,8 @@ package model;
 import lombok.Builder;
 import model.annotations.DataElement;
 import lombok.Data;
+import states.IOrderState;
+import states.OrderIsCreatedState;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -26,6 +28,11 @@ public class Order {
     @DataElement(key = "quantity")
     private int quantity;
 
+//    0: order created
+//    1: order accepted
+//    2: order ready for delivery
+//    3: order deliveried
+//    4: order cancelled
     @DataElement(key = "order_status")
     private Integer status;
 
@@ -35,7 +42,12 @@ public class Order {
     @DataElement(key = "product_id", foreignKey = true)
     private Product product;
 
-    public Order() {
+    private IOrderState currentStatus;
+
+    public Order(IOrderState currentStatus) {
+        if(currentStatus == null) this.currentStatus = OrderIsCreatedState.instance();
+
+        this.currentStatus = currentStatus;
     }
 
     public Order(long orderId, Timestamp createdAt, Timestamp finishedAt, String orderDescription, int quantity, Integer status, Client client, Product product) {
@@ -57,5 +69,10 @@ public class Order {
         this.quantity = o.getQuantity();
         this.client = new Client(o.getClient());
         this.product = new Product(o.getProduct());
+    }
+
+    public void updateStatus()
+    {
+        currentStatus.setState(this);
     }
 }

@@ -2,13 +2,11 @@ package chain;
 
 import model.Order;
 
-import java.text.ParseException;
-
-public abstract class IOrderChain
+public abstract class OrderChain
 {
-    private IOrderChain next;
+    private OrderChain next;
 
-    public IOrderChain setNextChain(IOrderChain next) {
+    public OrderChain setNextChain(OrderChain next) {
         this.next = next;
         return next;
     }

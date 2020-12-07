@@ -9,7 +9,7 @@ public class MakeOrderAction implements ICommand {
 
     private Order order = new Order();
     private Gson gson = new Gson();
-    IOrderChain orderChain = new CreateOrderChain();
+    OrderChain orderChain = new CreateOrderChain();
 
     public MakeOrderAction() {
         orderChain.setNextChain(new NotifyBusinessChain())

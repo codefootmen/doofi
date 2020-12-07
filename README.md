@@ -21,6 +21,7 @@ This project is an example of some design patterns implementations.
 - Iterator
 - Memento
 - Observable
+- Builder
 
 
 ## How to run
