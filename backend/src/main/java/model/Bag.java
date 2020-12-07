@@ -22,6 +22,10 @@ public class Bag {
         return new BagProductIterator(this.orders);
     }
 
+    public void addOrder(Order o ){
+        this.orders.add(o);
+    }
+
     public BagMemento getMemento(){
         BagMemento now = new BagMemento();
 
