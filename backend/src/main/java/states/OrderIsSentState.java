@@ -3,6 +3,8 @@ package states;
 import model.Order;
 import persistence.Dao;
 
+import java.sql.Timestamp;
+
 public class OrderIsSentState implements IOrderState{
 
     @Override
@@ -24,6 +26,7 @@ public class OrderIsSentState implements IOrderState{
     public boolean orderDeliveried(Order order) {
         try{
             order.setCurrentStatus("Deliveried");
+            order.setFinishedAt(new Timestamp(System.currentTimeMillis()));
             Dao.getInstance().update(order);
         }catch (Exception e){
             e.toString();
@@ -35,6 +38,7 @@ public class OrderIsSentState implements IOrderState{
     public boolean orderCancelled(Order order) {
         try{
             order.setCurrentStatus("Cancelled");
+            order.setFinishedAt(new Timestamp(System.currentTimeMillis()));
             Dao.getInstance().update(order);
         }catch (Exception e){
             e.toString();

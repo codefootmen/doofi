@@ -8,6 +8,8 @@ import lombok.SneakyThrows;
 import model.BagManager;
 import model.Order;
 
+import java.sql.Timestamp;
+
 public class MakeOrderAction implements ICommand {
 
     private Order order = Order.builder().build(); // This is strange
@@ -27,6 +29,7 @@ public class MakeOrderAction implements ICommand {
         MakeOrderAction makeOrderAction = new MakeOrderAction();
 
         Order newOrder = gson.fromJson(req, order.getClass());
+        newOrder.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 
         BagManager.bag.addOrder(newOrder);
         BagManager.bag.snapshot();

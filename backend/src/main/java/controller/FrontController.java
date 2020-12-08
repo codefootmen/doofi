@@ -15,7 +15,7 @@ public class FrontController {
     private static Gson gson = new Gson();
 
     @SneakyThrows
-    protected Response handleRequest(String req, int id) {
+    public Response handleRequest(String req, int id) {
         try {
             ICommand command = (ICommand) Class.forName("actions." + req).getDeclaredConstructor().newInstance();
             Object response = command.execute(req, id);
@@ -40,7 +40,7 @@ public class FrontController {
 
 
     @SneakyThrows
-    protected Response handleRequest(String command, String req) {
+    public Response handleRequest(String command, String req) {
         try {
             ICommand action = (ICommand) Class.forName("actions." + command).getDeclaredConstructor().newInstance();
             Object response = action.execute(req, 0);

@@ -1,13 +1,17 @@
 package tests;
 
 import actions.ChangeStateToAcceptedAction;
+import actions.ChangeStateToSentStateAction;
+import actions.GetAllOrdersAction;
 import actions.ICommand;
 import com.google.gson.Gson;
+import controller.FrontController;
 import model.*;
 import persistence.Dao;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
+import javax.ws.rs.core.Response;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -123,16 +127,75 @@ class DaoTest {
                 .product(Product.builder()
                         .productId(1)
                         .build())
-                .currentStatus("Sent")
+                .currentStatus("Accepted")
                 .orderDescription("Pelo amor de Deus....")
                 .createdAt(new Timestamp(System.currentTimeMillis()))
                 .build();
 
-        ICommand command = new ChangeStateToAcceptedAction();
+        ICommand command = new ChangeStateToSentStateAction();
 
         Gson gs = new Gson();
         boolean response = (boolean) command.execute(gs.toJson(order), 0);
 
         assertTrue(response);
+    }
+
+
+    @Test
+    void GetAllOrders() {
+        ICommand command = new GetAllOrdersAction();
+
+        Gson gs = new Gson();
+        boolean response = (boolean) command.execute(gs.toJson(Order.builder().build()), 0);
+
+        assertTrue(response);
+    }
+
+    @Test
+    void HandleRequesPost(){
+        FrontController controller = new FrontController();
+        String req = "{\n" +
+                "\"orderId\": 1,                \n" +
+                "\"createdAt\": \"Nov 30, 2020 3:21:59 AM\",\n" +
+                "                \"orderDescription\": \"teste123\",\n" +
+                "                \"quantity\": 2,\n" +
+                "                \"currentStatus\": \"Sent\",\n" +
+                "                \"client\": {\n" +
+                "                    \"clientId\": 1,\n" +
+                "                    \"name\": \"Cliente Teste\",\n" +
+                "                    \"cpf\": \"123.456.789-12\",\n" +
+                "                    \"login\": \"ctest\",\n" +
+                "                    \"password\": \"123456\",\n" +
+                "                    \"address\": {\n" +
+                "                        \"addressId\": 1,\n" +
+                "                        \"street\": \"Rua 2\",\n" +
+                "                        \"houseNumber\": 340,\n" +
+                "                        \"details\": \"Casa\",\n" +
+                "                        \"neighbourhood\": \"Centro\",\n" +
+                "                        \"city\": \"Juiz de Fora\"\n" +
+                "                    }\n" +
+                "                },\n" +
+                "                \"product\": {\n" +
+                "                    \"productId\": 1,\n" +
+                "                    \"name\": \"Batata Frita\",\n" +
+                "                    \"description\": \"Batata Fritinha\",\n" +
+                "                    \"unitaryValue\": 20,\n" +
+                "                    \"business\": {\n" +
+                "                        \"businessId\": 1,\n" +
+                "                        \"name\": \"toshios bakery\",\n" +
+                "                        \"cnpj\": \"123455678\",\n" +
+                "                        \"address\": {\n" +
+                "                            \"addressId\": 1,\n" +
+                "                            \"street\": \"Rua 2\",\n" +
+                "                            \"houseNumber\": 340,\n" +
+                "                            \"details\": \"Casa\",\n" +
+                "                            \"neighbourhood\": \"Centro\",\n" +
+                "                            \"city\": \"Juiz de Fora\"\n" +
+                "                        }\n" +
+                "                    }\n" +
+                "                }\n" +
+                "            }";
+
+        Response response = controller.handleRequest("ChangeStateToSentStateAction", req);
     }
 }
