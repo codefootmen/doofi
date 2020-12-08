@@ -10,7 +10,7 @@ import model.Order;
 
 public class MakeOrderAction implements ICommand {
 
-    private Order order = Order.builder().build(); // This is strange
+    private Order order = Order.builder().build();
     private Gson gson = new Gson();
     OrderChain orderChain = new CreateOrderChain();
 

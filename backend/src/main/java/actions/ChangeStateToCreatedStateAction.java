@@ -4,6 +4,7 @@ import actions.ICommand;
 import com.google.gson.Gson;
 import lombok.SneakyThrows;
 import model.Order;
+import utils.NotificationEmitter;
 
 import java.lang.reflect.Method;
 
@@ -21,6 +22,7 @@ public class ChangeStateToCreatedStateAction implements ICommand {
         Method setNewState = clazz.getMethod("orderCreated", Order.class);
         Object obj = clazz.getDeclaredConstructor().newInstance();
 
+        NotificationEmitter.emit();
         return setNewState.invoke(obj, actualOrder);
     }
 }
