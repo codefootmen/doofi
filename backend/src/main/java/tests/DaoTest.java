@@ -104,6 +104,7 @@ class DaoTest {
         Dao.getInstance().save(order);
     }
 
+
     @Test
     void update() {
         Optional<Order> order = Dao.getInstance().get(Order.builder().build(), 1);
@@ -206,5 +207,14 @@ class DaoTest {
                 "            }";
 
         Response response = controller.handleRequest("ChangeStateToSentStateAction", req);
+    }
+
+    @Test
+    void HandleRequesPost_MakeOrderAction(){
+        FrontController controller = new FrontController();
+        String req = "{\"orderDescription\":\"Produto Genérico\",\"quantity\":1,\"client\":{\"clientId\":1},\"product\":{\"productId\":1}}";
+
+        Response response = controller.handleRequest("MakeOrderAction", req);
+        System.out.println();
     }
 }
