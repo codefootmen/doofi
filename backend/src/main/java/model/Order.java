@@ -30,7 +30,7 @@ public class Order {
     private int quantity;
 
     @DataElement(key = "order_status")
-    private IOrderState currentStatus;
+    private String currentStatus;
 
     @DataElement(key = "client_id", foreignKey = true)
     private Client client;
@@ -38,7 +38,7 @@ public class Order {
     @DataElement(key = "product_id", foreignKey = true)
     private Product product;
 
-    public Order(long orderId, Timestamp createdAt, Timestamp finishedAt, String orderDescription, int quantity, IOrderState status, Client client, Product product) {
+    public Order(long orderId, Timestamp createdAt, Timestamp finishedAt, String orderDescription, int quantity, String status, Client client, Product product) {
         this.orderId = orderId;
         this.createdAt = createdAt;
         this.finishedAt = finishedAt;
@@ -57,32 +57,5 @@ public class Order {
         this.quantity = o.getQuantity();
         this.client = new Client(o.getClient());
         this.product = new Product(o.getProduct());
-    }
-
-    public void updateState(){
-        Dao.getInstance().update(this);
-    }
-
-    public void setCurrentStatus (IOrderState orderState){
-        this.currentStatus = orderState;
-    }
-    public boolean orderCreated(Order order) {
-        return this.currentStatus.orderCreated(this);
-    }
-
-    public boolean orderAccepted(Order order) {
-        return this.currentStatus.orderAccepted(this);
-    }
-
-    public boolean orderSent(Order order) {
-        return this.currentStatus.orderSent(this);
-    }
-
-    public boolean orderDeliveried(Order order) {
-        return this.currentStatus.orderDeliveried(this);
-    }
-
-    public boolean orderCancelled(Order order) {
-        return this.currentStatus.orderCancelled(this);
     }
 }

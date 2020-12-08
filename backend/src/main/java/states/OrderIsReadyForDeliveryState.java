@@ -1,6 +1,7 @@
 package states;
 
 import model.Order;
+import persistence.Dao;
 
 public class OrderIsReadyForDeliveryState implements IOrderState{
 
@@ -22,8 +23,8 @@ public class OrderIsReadyForDeliveryState implements IOrderState{
     @Override
     public boolean orderDeliveried(Order order) {
         try{
-            order.setCurrentStatus(new OrderIsDeliveriedState());
-            order.updateState();
+            order.setCurrentStatus("Deliveried");
+            Dao.getInstance().update(order);
         }catch (Exception e){
             e.toString();
         }
@@ -33,8 +34,8 @@ public class OrderIsReadyForDeliveryState implements IOrderState{
     @Override
     public boolean orderCancelled(Order order) {
         try{
-            order.setCurrentStatus(new OrderIsCancelledState());
-            order.updateState();
+            order.setCurrentStatus("Cancelled");
+            Dao.getInstance().update(order);
         }catch (Exception e){
             e.toString();
         }
