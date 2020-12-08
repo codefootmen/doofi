@@ -9,10 +9,12 @@ import { GetAllBusinesses } from "../model/restaurants.model"
  
   const [restaurants, setRestaurants] = useState([]); 
 
+  const GetAllBusinessesAsync = async () => {
+    const x = await GetAllBusinesses();
+    setRestaurants(x);
+  }
   useEffect(async()=>{
-    GetAllBusinesses().then(x => {
-      setRestaurants(x);
-    });
+    GetAllBusinessesAsync();
   });
 
   return (
