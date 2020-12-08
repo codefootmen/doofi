@@ -13,9 +13,10 @@ import { GetAllBusinesses } from "../model/restaurants.model"
     const x = await GetAllBusinesses();
     setRestaurants(x);
   }
+  
   useEffect(async()=>{
     GetAllBusinessesAsync();
-  });
+  }, []);
 
   return (
     <>

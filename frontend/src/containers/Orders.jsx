@@ -1,56 +1,171 @@
 import { Content, Table, Button } from "../styles";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState, React } from "react";
 import Header from "../components/Header";
+import { api } from "../services/api";
 
 function Orders() {
   //   const products = useSelector((state) => state.products);
   //   console.log(products);
 
-  const order = [
-    { name: "Toshio's Bake n Cake", restaurantId: 1, status: "CRIADO" },
-    { name: "Toshio's Cook n Blunt ", restaurantId: 2, status: "ACEITO" },
-    { name: "Toshio's Wiggle n Giggle", restaurantId: 3, status: "CANCELADO" },
-    { name: "Toshio's Aunt Mary Cookies", restaurantId: 4, status: "COMPLETADO" },
-    { name: "Toshio's Black Gold Chocolates", restaurantId: 1, status: "ENVIADO" },
-    { name: "Toshio's Big Pillows Cotton Candy", restaurantId: 1, status: "CRIADO" },
-  ];
-  const actions = ["ACEITO", "CANCELADO", "CRIADO", "ENVIADO", "COMPLETADO"];
+  const [orders, setOrders] = useState([]);
 
-  const remove = () => {};
+  const transformRequest = (jsonData = {}) =>
+    Object.entries(jsonData)
+      .map((x) => `${encodeURIComponent(x[0])}=${encodeURIComponent(x[1])}`)
+      .join("&");
+
+  useEffect(async () => {
+    const get = async () => {
+      let o = await api().get(`/action/GetAllOrdersAction/`);
+      return o;
+    };
+    let response = await get();
+    setOrders(response.data);
+  }, []);
+
+  const accept = (i, id) => {
+    let obj = orders.filter((x) => {
+      return x.value.orderId == i;
+    });
+
+    api()
+      .post(
+        `/action/ChangeStateToAcceptedAction/`,
+        transformRequest({
+          value: JSON.stringify(obj[0].value),
+        }),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      )
+      .then((res) => {
+        if (res.data) {
+          window.location.reload();
+        } else {
+          alert("Transição inválida.");
+        }
+      });
+  };
+
+  const cancel = (i, id) => {
+    let obj = orders.filter((x) => {
+      return x.value.orderId == i;
+    });
+    api()
+      .post(
+        `/action/ChangeStateToCancelledStateAction/`,
+        transformRequest({
+          value: JSON.stringify(obj[0].value),
+        }),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      )
+      .then((res) => {
+        if (res.data) {
+          window.location.reload();
+        } else {
+          alert("Transição inválida.");
+        }
+      });
+  };
+
+  const send = async (i, id) => {
+    let obj = orders.filter((x) => {
+      return x.value.orderId == i;
+    });
+
+    api()
+      .post(
+        `/action/ChangeStateToSentStateAction/`,
+        transformRequest({
+          value: JSON.stringify(obj[0].value),
+        }),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      )
+      .then((res) => {
+        if (res.data) {
+          window.location.reload();
+        } else {
+          alert("Transição inválida.");
+        }
+      });
+  };
+
+  const complete = (i, id) => {
+    let obj = orders.filter((x) => {
+      return x.value.orderId == i;
+    });
+
+    api()
+      .post(
+        `/action/ChangeStateToDeliveriedStateAction/`,
+        transformRequest({
+          value: JSON.stringify(obj[0].value),
+        }),
+        {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }
+      )
+      .then((res) => {
+        if (res.data) {
+          window.location.reload();
+        } else {
+          alert("Transição inválida.");
+        }
+      });
+  };
+
   return (
     <>
       <Header />
       <Content>
         <Table>
           <tr>
-            <th>Produto</th>
-            <th>Restaurante</th>
+            <th>Order ID</th>
             <th>Status</th>
             <th>Action</th>
           </tr>
-          {order.map((x) => (
+          {orders.map((x) => (
             <tr>
-              <td>{x.name}</td>
-              <td>{x.restaurantId}</td>
-              <td>{x.status}</td>
+              <td>{x.value.orderId}</td>
+              <td>{x.value.currentStatus}</td>
               <td>
                 <Button>
-                  <button onClick={remove.bind(this, x.id)}>Aceitar</button>
+                  <button onClick={accept.bind(this, x.value.orderId)}>
+                    Aceitar
+                  </button>
                 </Button>
               </td>
               <td>
                 <Button>
-                  <button onClick={remove.bind(this, x.id)}>Cancelar</button>
+                  <button onClick={send.bind(this, x.value.orderId)}>
+                    Enviar
+                  </button>
                 </Button>
               </td>
               <td>
                 <Button>
-                  <button onClick={remove.bind(this, x.id)}>Enviar</button>
+                  <button onClick={complete.bind(this, x.value.orderId)}>
+                    Finalizar Pedido
+                  </button>
                 </Button>
               </td>
               <td>
                 <Button>
-                  <button onClick={remove.bind(this, x.id)}>Completar</button>
+                  <button onClick={cancel.bind(this, x.value.orderId)}>
+                    Cancelar
+                  </button>
                 </Button>
               </td>
             </tr>

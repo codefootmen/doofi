@@ -80,6 +80,15 @@ class DaoTest {
     }
 
     @Test
+    void getAll_business() {
+        Business business = Business.builder().build();
+
+        List<Business> test = Dao.getInstance().getAll(business);
+
+        assertFalse(test.isEmpty());
+    }
+
+    @Test
     void save() {
         Order order = Order
                 .builder()
