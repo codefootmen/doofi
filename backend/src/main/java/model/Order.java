@@ -3,6 +3,9 @@ package model;
 import lombok.Builder;
 import model.annotations.DataElement;
 import lombok.Data;
+import persistence.Dao;
+import states.IOrderState;
+import states.OrderIsCreatedState;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -27,7 +30,7 @@ public class Order {
     private int quantity;
 
     @DataElement(key = "order_status")
-    private Integer status;
+    private String currentStatus;
 
     @DataElement(key = "client_id", foreignKey = true)
     private Client client;
@@ -35,16 +38,13 @@ public class Order {
     @DataElement(key = "product_id", foreignKey = true)
     private Product product;
 
-    public Order() {
-    }
-
-    public Order(long orderId, Timestamp createdAt, Timestamp finishedAt, String orderDescription, int quantity, Integer status, Client client, Product product) {
+    public Order(long orderId, Timestamp createdAt, Timestamp finishedAt, String orderDescription, int quantity, String status, Client client, Product product) {
         this.orderId = orderId;
         this.createdAt = createdAt;
         this.finishedAt = finishedAt;
         this.orderDescription = orderDescription;
         this.quantity = quantity;
-        this.status = status;
+        this.currentStatus = status;
         this.client = client;
         this.product = product;
     }

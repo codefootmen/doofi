@@ -1,5 +1,8 @@
 package tests;
 
+import actions.ChangeStateToAcceptedAction;
+import actions.ICommand;
+import com.google.gson.Gson;
 import model.*;
 import persistence.Dao;
 import lombok.SneakyThrows;
@@ -91,7 +94,7 @@ class DaoTest {
     @Test
     void update() {
         Optional<Order> order = Dao.getInstance().get(Order.builder().build(), 1);
-        order.get().setFinishedAt(new Timestamp(System.currentTimeMillis()));
+        order.get().setFinishedAt(null);
 
         Dao.getInstance().update(order.get());
         Optional<Address> addressUpdated = Dao.getInstance().get(Address.builder().build(), order.get().getOrderId());
@@ -106,5 +109,30 @@ class DaoTest {
 
         Optional<Address> addressDeleted = Dao.getInstance().get(Address.builder().build(), 5);
         assertEquals(addressDeleted, Optional.empty());
+    }
+
+
+    @Test
+    void ChangeToCreatedState() {
+        Order order = Order
+                .builder()
+                .orderId(1)
+                .client(Client.builder()
+                        .clientId(1)
+                        .build())
+                .product(Product.builder()
+                        .productId(1)
+                        .build())
+                .currentStatus("Sent")
+                .orderDescription("Pelo amor de Deus....")
+                .createdAt(new Timestamp(System.currentTimeMillis()))
+                .build();
+
+        ICommand command = new ChangeStateToAcceptedAction();
+
+        Gson gs = new Gson();
+        boolean response = (boolean) command.execute(gs.toJson(order), 0);
+
+        assertTrue(response);
     }
 }
