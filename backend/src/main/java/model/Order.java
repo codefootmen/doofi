@@ -38,6 +38,8 @@ public class Order {
     @DataElement(key = "product_id", foreignKey = true)
     private Product product;
 
+    public Order(){}
+
     public Order(long orderId, Timestamp createdAt, Timestamp finishedAt, String orderDescription, int quantity, String status, Client client, Product product) {
         this.orderId = orderId;
         this.createdAt = createdAt;
@@ -55,6 +57,7 @@ public class Order {
         this.finishedAt = o.getFinishedAt();
         this.orderDescription = o.getOrderDescription();
         this.quantity = o.getQuantity();
+        this.currentStatus = o.getCurrentStatus();
         this.client = new Client(o.getClient());
         this.product = new Product(o.getProduct());
     }
