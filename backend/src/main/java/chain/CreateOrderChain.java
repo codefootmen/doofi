@@ -9,7 +9,7 @@ public class CreateOrderChain extends OrderChain {
     public boolean invoke(Order order) {
 
         try {
-            order.setCurrentStatus(new OrderIsCreatedState());
+            order.setCurrentStatus("Created");
             Dao.getInstance().save(order);
             return checkNext(order);
 

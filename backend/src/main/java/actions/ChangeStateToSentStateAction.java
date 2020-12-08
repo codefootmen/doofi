@@ -4,12 +4,10 @@ import actions.ICommand;
 import com.google.gson.Gson;
 import lombok.SneakyThrows;
 import model.Order;
-import states.IOrderState;
 
 import java.lang.reflect.Method;
 
-public class ChangeStateToAcceptedAction implements ICommand {
-    private Order order = Order.builder().build();
+public class ChangeStateToSentStateAction implements ICommand {
     private Gson gson = new Gson();
 
     @SneakyThrows
@@ -20,7 +18,7 @@ public class ChangeStateToAcceptedAction implements ICommand {
         String actualState = actualOrder.getCurrentStatus();
 
         Class clazz = Class.forName("states.OrderIs"+actualState+"State");
-        Method setNewState = clazz.getMethod("orderAccepted", Order.class);
+        Method setNewState = clazz.getMethod("orderSent", Order.class);
         Object obj = clazz.getDeclaredConstructor().newInstance();
 
         return setNewState.invoke(obj, actualOrder);

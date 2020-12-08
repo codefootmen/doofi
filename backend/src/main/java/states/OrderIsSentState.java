@@ -3,7 +3,7 @@ package states;
 import model.Order;
 import persistence.Dao;
 
-public class OrderIsReadyForDeliveryState implements IOrderState{
+public class OrderIsSentState implements IOrderState{
 
     @Override
     public boolean orderCreated(Order order) {
